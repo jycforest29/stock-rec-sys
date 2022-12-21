@@ -9,5 +9,5 @@ public class RateVO {
     private double rate;
     private double priceRate;
     private double volumeRate;
-    private double sdRate;
+    private double priceSdRate;
 }

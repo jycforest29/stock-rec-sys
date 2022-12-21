@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "stock")
 public class StockEntity {
     @Id // read-only, null 관련 설정 포함?
     private String code;
