@@ -7,6 +7,8 @@
 - 프로젝트 구조 
 
   ![image](https://user-images.githubusercontent.com/103106183/208821195-93a13b3c-7c6d-414c-97c1-164d260fcdf8.png)
+  
+  * Dart Open api는 dart_fss 사용
 
 - 추천시스템 구현 방법
     
@@ -17,3 +19,11 @@
 - 클래스 다이어그램
     
     ![image](https://user-images.githubusercontent.com/103106183/208821069-248c33a0-b461-4a0b-aa41-dd3bdd07747d.png)
+
+- 더 추가할 기능  
+
+    - 멀티스레딩 적용해 성능 최적화
+    
+    - SOLID 원칙 지키도록 리팩토링
+    
+    - 추천 알고리즘 개선(단순히 사용자가 입력한 기간 그대로 반영해 추천하지 말고, 수익률이 낮거나 유사도가 낮을 경우 기간 변경해가며 추천하도록)
