@@ -1,7 +1,9 @@
 package com.bi.stockrecsys.controller;
 
 import com.bi.stockrecsys.dto.RequestDTO;
+import com.bi.stockrecsys.dto.RequestDTOWrapper;
 import com.bi.stockrecsys.dto.ResponseDTO;
+import com.bi.stockrecsys.dto.ResponseDTOWrapper;
 import com.bi.stockrecsys.service.MainService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,10 @@ public class MainController {
         this.mainService = mainService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> rebalance(@RequestBody List<RequestDTO> requestDTOList){
-
+    @GetMapping("/rebalance")
+    public ResponseEntity<?> rebalance(@RequestBody RequestDTOWrapper requestDTOWrapper){
+        // [To - refactor] 클래스 단일 책임 원칙에 맞지 않음.
+        List<RequestDTO> requestDTOList = requestDTOWrapper.getRequestDTOs();
         List<ResponseDTO>[] responseDTOList = new ArrayList[requestDTOList.size()];
         for(int i = 0; i < requestDTOList.size(); i++){
             responseDTOList[i] = new ArrayList<ResponseDTO>();
@@ -33,26 +36,36 @@ public class MainController {
         for(RequestDTO requestDTO : requestDTOList){
             validate(requestDTO);
             try{
-                responseDTOList[idx] = mainService.recommend(requestDTO); // # 서비스인자로 dto 들어가도 되는거야? 아니. https://www.baeldung.com/java-dto-pattern. 근데 이게 가장 적당하지 않나?
+                responseDTOList[idx] = mainService.recommend(requestDTO);
                 idx += 1;
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
-        return new ResponseEntity<>(requestDTOList, HttpStatus.OK);
+//        List<ResponseDTO> result = responseDTOList[0];
+//        ResponseDTOWrapper r = new ResponseDTOWrapper(result);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTOList);
     }
 
+// [To - refactor] 분기문이 너무 많음. 더 깔끔히 처리할 수 없을까?
     public void validate(RequestDTO requestDTO){
-        // # 현재 날짜로부터 1분기 <= start <= 현재 날짜
-        // # 현재 날짜로부터 1분기 <= end <= 현재 날짜
-        if (requestDTO.getStockName() == ""){
+        // DataVO
+        // [To - feat] 거래 날짜가 DB상의 범위를 벗어나는 경우에 대해 예외처리 안함.
+        if (requestDTO.getStart().toString().isEmpty()){ // [To - feat]각 년도, 월, 일이 빈칸일 때 예외 세부적 처리 안함.
+            throw new RuntimeException("거래시작 기간 빈칸");
+        }
+        if (requestDTO.getEnd().toString().equals("")){ // [To - feat]각 년도, 월, 일이 빈칸일 때 예외 세부적 처리 안함.
+            throw new RuntimeException("거래종료 기간 빈칸");
+        }
+        // code
+        if (requestDTO.getStockName().isEmpty()){
             throw new RuntimeException("종목 이름 빈칸");
         }
-        // # 종목 이름 존재 안함
-        // # 종목 코드 존재 안함
-        if (requestDTO.getStockCode() == ""){
+        // name
+        if (requestDTO.getStockCode().isEmpty()){
             throw new RuntimeException("종목 코드 빈칸");
         }
+        // volume
         if (requestDTO.getVolume() <= 0){
             throw new RuntimeException("거래량 <= 0");
         }
