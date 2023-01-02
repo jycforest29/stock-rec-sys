@@ -10,7 +10,7 @@
     
 - 프로젝트 구조 
 
-  ![image](https://user-images.githubusercontent.com/103106183/208821195-93a13b3c-7c6d-414c-97c1-164d260fcdf8.png)
+  ![image](https://user-images.githubusercontent.com/103106183/210195967-b114e326-1b3d-4631-ae56-7916f2e56d04.png)
   
   * Dart Open api는 dart_fss 사용
 
@@ -29,6 +29,8 @@
 - 더 추가할 기능  
 
     - 멀티스레딩 적용해 성능 최적화
+    
+    - cached memory 적용해 성능 최적화
     
     - SOLID 원칙 지키도록 리팩토링
     
