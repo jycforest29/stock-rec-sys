@@ -33,6 +33,9 @@ public abstract class Transaction {
     @Column(name = "avg_volume", nullable = false)
     private int avgVolume;
 
-    @Column(name = "avg_sd", nullable = false)
-    private double avgSd;
+    @Column(name = "avg_sd_volume", nullable = false)
+    private double avgVolumeSd;
+
+    @Column(name = "avg_sd_price", nullable = false)
+    private double avgPriceSd;
 }

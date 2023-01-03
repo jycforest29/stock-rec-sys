@@ -3,7 +3,7 @@ package com.bi.stockrecsys.vo;
 import lombok.*;
 
 @AllArgsConstructor
-@Setter
+@Getter
 public class DateVO {
     private int year;
     private int month;

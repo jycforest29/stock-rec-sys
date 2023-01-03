@@ -1,17 +1,15 @@
 package com.bi.stockrecsys.repository;
 
+import com.bi.stockrecsys.entity.Pk;
 import com.bi.stockrecsys.entity.RecordEntity;
 import com.bi.stockrecsys.entity.StockEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 @SpringBootTest
 class RecordRepositoryTest {
@@ -22,27 +20,17 @@ class RecordRepositoryTest {
     @Autowired
     private RecordRepository recordRepository;
 
-
     @Test
     @Transactional
-    @Rollback
     public void RecordRepository_test(){
         // given
-        List<StockEntity> stocks = stockRepository.saveAll(Arrays.asList(new StockEntity("레코드_테스트_code", "테스트_name", "테스트_market", "테스트_sector")));
-
-        RecordEntity toInsert = new RecordEntity();
-        toInsert.setStock(stocks.get(0));
-        toInsert.setDate("테스트_start");
-        toInsert.setPrice(0);
-        toInsert.setVolume(0);
-
-        List<RecordEntity> recordEntities = recordRepository.saveAll(Arrays.asList(toInsert));
+        StockEntity stockEntity = stockRepository.findByCode("000150");
+        Pk pk = new Pk(stockEntity, "2022-09-14");
 
         // when
-        RecordEntity recordEntity= recordRepository.findByStockAndDate(stocks.get(0), "테스트_start");
+        RecordEntity recordEntity= recordRepository.findByPk(pk);
 
         // then
-        assertThat(recordEntity.getPrice() == 0);
-        assertThat(recordEntity.getVolume() == 0);
+        assertEquals(recordEntity.getPk().getDate(), "2022-09-14");
     }
 }
