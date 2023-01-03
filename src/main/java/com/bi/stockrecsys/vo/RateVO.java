@@ -4,7 +4,6 @@ import lombok.*;
 
 @AllArgsConstructor
 @Getter
-@Setter
 public class RateVO {
     private double rate;
     private double priceRate;
