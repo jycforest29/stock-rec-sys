@@ -25,7 +25,7 @@ public class MainController {
 
     @GetMapping("/rebalance")
     public ResponseEntity<?> rebalance(@RequestBody RequestDTOWrapper requestDTOWrapper){
-        // [To - refactor] 클래스 단일 책임 원칙에 맞지 않음.
+        // [ToDo - refactor] 클래스 단일 책임 원칙에 맞지 않음.
         List<RequestDTO> requestDTOList = requestDTOWrapper.getRequestDTOs();
         List<ResponseDTO>[] responseDTOList = new ArrayList[requestDTOList.size()];
         for(int i = 0; i < requestDTOList.size(); i++){

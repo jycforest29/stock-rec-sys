@@ -5,7 +5,10 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 public class DateVO {
-    private int year;
-    private int month;
-    private int date;
+    @NonNull
+    private String year;
+    @NonNull
+    private String month;
+    @NonNull
+    private String date;
 }
