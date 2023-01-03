@@ -7,12 +7,6 @@
 - 프로젝트 소개
     
     사용자의 주식 거래 내역 기반으로, 대신 매수했으면 더 좋았을 주식을 추천해주는 서비스
-    
-- 프로젝트 구조 
-
-  ![image](https://user-images.githubusercontent.com/103106183/210195967-b114e326-1b3d-4631-ae56-7916f2e56d04.png)
-  
-  * Dart Open api는 dart_fss 사용
 
 - 추천시스템 구현 방법
     
@@ -22,14 +16,12 @@
     
     - 0.5라는 값은 경험적으로 산출된 값
     
-- 클래스 다이어그램
-    
-    ![image](https://user-images.githubusercontent.com/103106183/208821069-248c33a0-b461-4a0b-aa41-dd3bdd07747d.png)
-
-- 설계의 이유
+- 설계
     - 전체 아키텍처 설계
         
         ![image](https://user-images.githubusercontent.com/103106183/210195967-b114e326-1b3d-4631-ae56-7916f2e56d04.png)
+        
+        * Dart Open api는 dart_fss 사용
         
         우선 DB 수집부터 추천 시스템 서버 개발까지 나 혼자 해야했기에 어떻게 구현할지 설계하는 것은 온전히 내가 정할 수 있었다.
         
