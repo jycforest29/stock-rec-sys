@@ -30,7 +30,11 @@ public class MainService {
     private HashMap<StockEntity, RateVO> upperSimilarity = new HashMap<>();
     private double toCompare = 0;
 
-    public MainService(StockRepository stockRepository, QuarterRepository quarterRepository,MonthRepository monthRepository, Day5Repository day5Repository, RecordRepository recordRepository){
+    public MainService(StockRepository stockRepository,
+                       QuarterRepository quarterRepository,
+                       MonthRepository monthRepository,
+                       Day5Repository day5Repository,
+                       RecordRepository recordRepository){
         this.stockRepository = stockRepository;
         this.quarterRepository = quarterRepository;
         this.monthRepository = monthRepository;
@@ -38,7 +42,6 @@ public class MainService {
         this.recordRepository = recordRepository;
     }
 
-    // [To - Refactor] 모듈화 제대로 되어있지 않음.
     public List<ResponseDTO> recommend(RequestDTO requestDTO){
         ArrayList<ResponseDTO> res = new ArrayList<>();
         stock = stockRepository.findByCode(requestDTO.getStockCode());
@@ -81,20 +84,25 @@ public class MainService {
         return res;
     }
 
-
     public double getCosineSimilarity(double[] vectorA, double[] vectorB){
+        isArraySizeEqual(vectorA, vectorB);
+
         double dotProduct = 0;
         double normA = 0;
         double normB = 0;
-        if (vectorA.length != vectorB.length){
-            throw new RuntimeException("두 벡터의 길이가 달라 코사인 유사도 계산 불가");
-        }
         for(int i = 0; i < vectorA.length ; i++){
             dotProduct += vectorA[i] * vectorB[i];
             normA += Math.pow(vectorA[i], 2);
             normB += Math.pow(vectorB[i], 2);
         }
+
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+
+    public void isArraySizeEqual(double[] vectorA, double[] vectorB){
+        if (vectorA.length != vectorB.length){
+            throw new RuntimeException("두 벡터의 길이가 달라 코사인 유사도 계산 불가");
+        }
     }
 
     public String toDate(DateVO dateVO){
