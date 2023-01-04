@@ -7,29 +7,30 @@ import com.bi.stockrecsys.repository.RecordRepository;
 import com.bi.stockrecsys.repository.StockRepository;
 import com.bi.stockrecsys.vo.DateVO;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class MainServiceTest {
-    @Autowired
-    private MainService mainService;
+    @Autowired MainService mainService;
 
-    @Autowired
-    private StockRepository stockRepository;
+    @Autowired StockRepository stockRepository;
 
-    @Autowired
-    private RecordRepository recordRepository;
+    @Autowired RecordRepository recordRepository;
 
     @Test
-    public void toDate_테스트(){
-        // given, when
-        String t = mainService.toDate(new DateVO("2022", "9", "14"));
+    public void toDate_메서드_테스트(){
+        // given
+        DateVO dateVO = new DateVO("2022", "9", "14");
+
+        // when
+        String toDateResult = mainService.toDate(dateVO);
 
         // then
-        assertEquals("2022-09-14", t);
+        assertThat("2022-09-14").isEqualTo(toDateResult);
     }
 
     @Test
@@ -44,7 +45,7 @@ class MainServiceTest {
         RecordEntity recordEntity= recordRepository.findByPk(pk);
 
         // then
-        assertEquals(recordEntity.getPk().getDate(), "2022-09-14");
+        assertThat(recordEntity.getPk().getDate()).isEqualTo("2022-09-14");
     }
 
     @Test
@@ -58,6 +59,6 @@ class MainServiceTest {
         double toCompare = (recordRepository.findByPk(pk).getPrice()) / 100 * 3.6;
 
         // then
-        assertEquals(3337 >= toCompare, false);
+        assertThat(3337 >= toCompare).isEqualTo(false);
     }
 }

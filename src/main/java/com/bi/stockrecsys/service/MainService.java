@@ -98,7 +98,6 @@ public class MainService {
     }
 
     public String toDate(DateVO dateVO){
-//        [To - feat] year에 대해 예외처리 안함(좀 애매함)
         int month = Integer.parseInt(dateVO.getMonth());
         int date = Integer.parseInt(dateVO.getDate());
 
