@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecordRepository extends JpaRepository<RecordEntity, Pk> {
-    RecordEntity findByPk(Pk pk); // pk라는 얘기
+    RecordEntity findByPk(Pk pk);
 }

@@ -3,34 +3,28 @@ package com.bi.stockrecsys.repository;
 import com.bi.stockrecsys.entity.Pk;
 import com.bi.stockrecsys.entity.RecordEntity;
 import com.bi.stockrecsys.entity.StockEntity;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mock;
 
-import javax.transaction.Transactional;
+import static org.assertj.core.api.Assertions.*;
 
-import static org.junit.Assert.*;
-
-@SpringBootTest
 class RecordRepositoryTest {
 
-    @Autowired
-    private StockRepository stockRepository;
+    @Mock private StockRepository stockRepository;
+    @Mock private RecordRepository recordRepository;
 
-    @Autowired
-    private RecordRepository recordRepository;
-
-    @Test
-    @Transactional
-    public void RecordRepository_test(){
+    @ParameterizedTest
+    @CsvSource({"000150", "2022-09-14"})
+    public void findByPk_정상_테스트(String stockCode, String inputDate){
         // given
-        StockEntity stockEntity = stockRepository.findByCode("000150");
-        Pk pk = new Pk(stockEntity, "2022-09-14");
+        StockEntity stockEntity = stockRepository.findByCode(stockCode);
+        Pk pk = new Pk(stockEntity, inputDate);
 
         // when
         RecordEntity recordEntity= recordRepository.findByPk(pk);
 
         // then
-        assertEquals(recordEntity.getPk().getDate(), "2022-09-14");
+        assertThat(recordEntity.getPk().getDate()).isEqualTo(inputDate);
     }
 }

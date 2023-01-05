@@ -73,7 +73,6 @@ public class MainService {
             }
         }
 
-        // sort
         res.sort(Comparator.comparing(ResponseDTO::getBetter));
         Collections.reverse(res);
 
@@ -84,7 +83,7 @@ public class MainService {
         return res;
     }
 
-    public double getCosineSimilarity(double[] vectorA, double[] vectorB){
+    public double getCosineSimilarity(double[] vectorA, double[] vectorB) {
         isArraySizeEqual(vectorA, vectorB);
 
         double dotProduct = 0;
@@ -96,6 +95,11 @@ public class MainService {
             normB += Math.pow(vectorB[i], 2);
         }
 
+        // division by zero 예외처리
+        // [ToDo - getCosineSimilarity()를 호출하는 로직에서 ArithmeticException()이 throw 되었을 때 처리하는 로직 필요함.]
+        if (normA == 0 | normB == 0){
+            throw new ArithmeticException();
+        }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
@@ -106,6 +110,7 @@ public class MainService {
     }
 
     public String toDate(DateVO dateVO){
+        // [ToDo - 앞의 로직에서 year의 예외처리가 선행되어야 함.]
         int month = Integer.parseInt(dateVO.getMonth());
         int date = Integer.parseInt(dateVO.getDate());
 
