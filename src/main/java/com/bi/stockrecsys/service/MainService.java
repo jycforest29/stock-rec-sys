@@ -13,6 +13,7 @@ import com.bi.stockrecsys.entity.transaction.QuarterEntity;
 import com.bi.stockrecsys.repository.*;
 import com.bi.stockrecsys.repository.transaction.MonthRepository;
 import com.bi.stockrecsys.repository.transaction.QuarterRepository;
+import com.bi.stockrecsys.vo.StockRecommendVO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,8 +29,8 @@ public class MainService {
 
     private StockEntity stock;
     private List<StockEntity> candidates;
+    private StockRecommendVO stockRecommendVO;
     private HashMap<StockEntity, RateVO> upperSimilarity = new HashMap<>();
-    private double toCompare = 0;
 
     public MainService(StockRepository stockRepository,
                        QuarterRepository quarterRepository,
@@ -45,29 +46,17 @@ public class MainService {
 
     public List<ResponseDTO> recommend(RequestDTO requestDTO){
         ArrayList<ResponseDTO> responseDTOs = new ArrayList<>();
+
         stock = stockRepository.findByCode(requestDTO.getStockCode());
-        candidates = stockRepository.findBySectorAndMarket(stock.getSector(), stock.getMarket());
-        candidates.remove(stock);
+        stockRecommendVO = getStockRecommendVO(stock, requestDTO);
+        candidates = getCandidates(stock);
 
-        QuarterEntity qStock = quarterRepository.findByStockCode(stock.getCode());
-        MonthEntity mStock = monthRepository.findByStockCode(stock.getCode());
-        Day5Entity dStock = day5Repository.findByStockCode(stock.getCode());
-        toCompare = recordRepository.findByPk(new Pk(stock, toDate(requestDTO.getEnd()))).getPrice()/100*requestDTO.getProfit();
-
-        // 각 price 유사도, volume 유사도, upAndDown 유사도 구함 -> 해당 종목과 유사도가 0.5 이상 높은 주식 필터링
         for(StockEntity candidate : candidates){
-            QuarterEntity q = quarterRepository.findByStockCode(candidate.getCode());
-            MonthEntity m = monthRepository.findByStockCode(candidate.getCode());
-            Day5Entity f = day5Repository.findByStockCode(candidate.getCode());
+            HashMap<String, double[]> avgRateWrapper = getAvgRateWrapper(candidate.getCode());
+            RateVO rateVO = getRateVO(avgRateWrapper, stockRecommendVO);
 
-            Double priceRate = getCosineSimilarity(new double[]{q.getAvgPrice(), m.getAvgPrice(), f.getAvgPrice()}, new double[]{qStock.getAvgPrice(), mStock.getAvgPrice(), dStock.getAvgPrice()});
-            Double volumeRate = getCosineSimilarity(new double[]{q.getAvgVolume(), m.getAvgVolume(), f.getAvgVolume()}, new double[]{qStock.getAvgVolume(), mStock.getAvgVolume(), dStock.getAvgVolume()});
-            Double sdRate = getCosineSimilarity(new double[]{q.getAvgPriceSd(), m.getAvgPriceSd(), f.getAvgPriceSd()}, new double[]{qStock.getAvgPriceSd(), mStock.getAvgPriceSd(), dStock.getAvgPriceSd()});
-
-            double rate = (priceRate+volumeRate+sdRate) / 3;
-            RateVO rateVO = new RateVO(rate, priceRate, volumeRate, sdRate);
-            if (priceRate >= 0.5 & volumeRate >= 0.5 & sdRate >= 0.5){
-                ResponseDTO resT = getUpperProfit(candidate,rateVO, requestDTO.getStart(), requestDTO.getEnd(), toCompare);
+            if (rateVO != null){
+                ResponseDTO resT = getUpperProfit(candidate, rateVO, requestDTO.getStart(), requestDTO.getEnd(), stockRecommendVO.getToCompare());
                 if (resT != null){
                     responseDTOs.add(resT);
                 }
@@ -79,10 +68,59 @@ public class MainService {
         return responseDTOs;
     }
 
+    public HashMap<String, double[]> getAvgRateWrapper(String stockCode){
+        HashMap<String, double[]> avgRateWrapper = new HashMap<>();
+
+        QuarterEntity quarterEntity = quarterRepository.findByStockCode(stockCode);
+        MonthEntity monthEntity = monthRepository.findByStockCode(stockCode);
+        Day5Entity day5Entity = day5Repository.findByStockCode(stockCode);
+
+        // [ToDo - 로직의 중복 제거하기.]
+        avgRateWrapper.put("priceRateWrapper",
+                new double[]{quarterEntity.getAvgPrice(), monthEntity.getAvgPrice(), day5Entity.getAvgPrice()});
+        avgRateWrapper.put("volumeRateWrapper",
+                new double[]{quarterEntity.getAvgVolume(), monthEntity.getAvgVolume(), day5Entity.getAvgVolume()});
+        avgRateWrapper.put("sdRateWrapper",
+                new double[]{quarterEntity.getAvgPriceSd(), monthEntity.getAvgPriceSd(), day5Entity.getAvgPriceSd()});
+
+        return avgRateWrapper;
+    }
+
+    public RateVO getRateVO(HashMap<String, double[]> avgRateWrapper, StockRecommendVO stockRecommendVO){
+        double priceRate = getCosineSimilarity(avgRateWrapper.get("priceRateWrapper"), stockRecommendVO.getAvgPriceWrapper());
+        double volumeRate = getCosineSimilarity(avgRateWrapper.get("volumeRateWrapper"), stockRecommendVO.getAvgVolumeWrapper());
+        double sdRate = getCosineSimilarity(avgRateWrapper.get("sdRateWrapper"), stockRecommendVO.getAvgSdWrapper());
+        double rate = (priceRate+volumeRate+sdRate) / 3;
+
+        if (priceRate > 0.5 & volumeRate > 0.5 & sdRate > 0.5){
+            RateVO rateVO = new RateVO(rate, priceRate, volumeRate, sdRate);
+            return rateVO;
+        }
+        return null;
+    }
+
+    public StockRecommendVO getStockRecommendVO(StockEntity stockEntity, RequestDTO requestDTO){
+        RecordEntity inputRecordEntity =recordRepository.findByPk(new Pk(stockEntity, toDate(requestDTO.getEnd())));
+        double inputStockPrice = inputRecordEntity.getPrice()/100*(requestDTO.getProfit());
+        HashMap<String, double[]> avgRateWrapper = getAvgRateWrapper(stockEntity.getCode());
+
+        return StockRecommendVO.builder()
+                .avgPriceWrapper(avgRateWrapper.get("priceRateWrapper"))
+                .avgVolumeWrapper(avgRateWrapper.get("volumeRateWrapper"))
+                .avgSdWrapper(avgRateWrapper.get("sdRateWrapper"))
+                .toCompare(inputStockPrice)
+                .build();
+    }
+
+    public List<StockEntity> getCandidates(StockEntity stockEntity){
+        List<StockEntity> candidates = stockRepository.findBySectorAndMarket(stockEntity.getSector(), stockEntity.getMarket());
+        candidates.remove(stockEntity);
+        return candidates;
+    }
+
     public ArrayList<ResponseDTO> sortByGetBetter(ArrayList<ResponseDTO> responseDTOs){
         responseDTOs.sort(Comparator.comparing(ResponseDTO::getBetter));
         Collections.reverse(responseDTOs);
-
         return responseDTOs;
     }
 
