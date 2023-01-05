@@ -1,6 +1,7 @@
 package com.bi.stockrecsys.service;
 
 import com.bi.stockrecsys.entity.transaction.Day5Entity;
+import com.bi.stockrecsys.exception.ArraySizeNotEqualException;
 import com.bi.stockrecsys.repository.transaction.Day5Repository;
 import com.bi.stockrecsys.vo.RateVO;
 import com.bi.stockrecsys.dto.RequestDTO;
@@ -43,7 +44,7 @@ public class MainService {
     }
 
     public List<ResponseDTO> recommend(RequestDTO requestDTO){
-        ArrayList<ResponseDTO> res = new ArrayList<>();
+        ArrayList<ResponseDTO> responseDTOs = new ArrayList<>();
         stock = stockRepository.findByCode(requestDTO.getStockCode());
         candidates = stockRepository.findBySectorAndMarket(stock.getSector(), stock.getMarket());
         candidates.remove(stock);
@@ -68,19 +69,29 @@ public class MainService {
             if (priceRate >= 0.5 & volumeRate >= 0.5 & sdRate >= 0.5){
                 ResponseDTO resT = getUpperProfit(candidate,rateVO, requestDTO.getStart(), requestDTO.getEnd(), toCompare);
                 if (resT != null){
-                    res.add(resT);
+                    responseDTOs.add(resT);
                 }
             }
         }
+        responseDTOs = sortByGetBetter(responseDTOs);
+        responseDTOs = getTopFive(responseDTOs);
 
-        res.sort(Comparator.comparing(ResponseDTO::getBetter));
-        Collections.reverse(res);
+        return responseDTOs;
+    }
 
-        if(res.size() >= 5){
-            ArrayList<ResponseDTO> subListedRes = new ArrayList<>(res.subList(0, 5));
-            return subListedRes;
+    public ArrayList<ResponseDTO> sortByGetBetter(ArrayList<ResponseDTO> responseDTOs){
+        responseDTOs.sort(Comparator.comparing(ResponseDTO::getBetter));
+        Collections.reverse(responseDTOs);
+
+        return responseDTOs;
+    }
+
+    public ArrayList<ResponseDTO> getTopFive(ArrayList<ResponseDTO> responseDTOs){
+        if(responseDTOs.size() >= 5){
+            ArrayList<ResponseDTO> getTopFiveResult = new ArrayList<>(responseDTOs.subList(0, 5));
+            return getTopFiveResult;
         }
-        return res;
+        return responseDTOs;
     }
 
     public double getCosineSimilarity(double[] vectorA, double[] vectorB) {
@@ -95,17 +106,16 @@ public class MainService {
             normB += Math.pow(vectorB[i], 2);
         }
 
-        // division by zero 예외처리
         // [ToDo - getCosineSimilarity()를 호출하는 로직에서 ArithmeticException()이 throw 되었을 때 처리하는 로직 필요함.]
         if (normA == 0 | normB == 0){
-            throw new ArithmeticException();
+            throw new ArithmeticException(); // division by zero 예외처리
         }
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
     public void isArraySizeEqual(double[] vectorA, double[] vectorB){
         if (vectorA.length != vectorB.length){
-            throw new RuntimeException("두 벡터의 길이가 달라 코사인 유사도 계산 불가");
+            throw new ArraySizeNotEqualException();
         }
     }
 
@@ -118,6 +128,7 @@ public class MainService {
     }
 
     public ResponseDTO getUpperProfit(StockEntity stockEntity, RateVO rateVO, DateVO start, DateVO end, double toCompare){
+        // 알고리즘 개선 - stockEntity
         RecordEntity b = recordRepository.findByPk(new Pk((StockEntity) stockEntity, toDate(start)));
         RecordEntity e = recordRepository.findByPk(new Pk((StockEntity) stockEntity, toDate(end)));
         if ((e.getPrice()-b.getPrice()) >= toCompare){

@@ -26,7 +26,7 @@ class MainServiceTest {
     private MainService mainService;
 
     @BeforeEach
-    public void beforeEach(){
+    public void BeforeEach(){
         this.mainService = new MainService(
                 this.stockRepository,
                 this.quarterRepository,
@@ -46,7 +46,6 @@ class MainServiceTest {
         assertThrows(ArithmeticException.class, () -> {
             mainService.getCosineSimilarity(vectorA, vectorB);
         });
-
     }
 
     @Test
@@ -75,5 +74,6 @@ class MainServiceTest {
         // then
         assertThat(toDateResult).isEqualTo("2022-09-14");
     }
+
 
 }
