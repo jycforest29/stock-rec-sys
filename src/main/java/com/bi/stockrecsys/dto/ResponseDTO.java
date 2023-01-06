@@ -2,12 +2,9 @@ package com.bi.stockrecsys.dto;
 
 import com.bi.stockrecsys.vo.DateVO;
 import com.bi.stockrecsys.vo.RateVO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
-@AllArgsConstructor
+@Builder
 @Setter
 @Getter
 public class ResponseDTO {

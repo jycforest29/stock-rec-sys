@@ -3,6 +3,7 @@ package com.bi.stockrecsys.vo;
 import lombok.*;
 
 @AllArgsConstructor
+@Builder
 @Getter
 public class DateVO {
     @NonNull

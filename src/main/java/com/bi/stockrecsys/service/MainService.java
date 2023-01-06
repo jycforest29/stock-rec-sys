@@ -14,8 +14,11 @@ import com.bi.stockrecsys.repository.*;
 import com.bi.stockrecsys.repository.transaction.MonthRepository;
 import com.bi.stockrecsys.repository.transaction.QuarterRepository;
 import com.bi.stockrecsys.vo.StockRecommendVO;
+import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 @Service
@@ -30,7 +33,6 @@ public class MainService {
     private StockEntity stock;
     private List<StockEntity> candidates;
     private StockRecommendVO stockRecommendVO;
-    private HashMap<StockEntity, RateVO> upperSimilarity = new HashMap<>();
 
     public MainService(StockRepository stockRepository,
                        QuarterRepository quarterRepository,
@@ -56,10 +58,10 @@ public class MainService {
             RateVO rateVO = getRateVO(avgRateWrapper, stockRecommendVO);
 
             if (rateVO != null){
-                ResponseDTO resT = getUpperProfit(candidate, rateVO, requestDTO.getStart(), requestDTO.getEnd(), stockRecommendVO.getToCompare());
-                if (resT != null){
-                    responseDTOs.add(resT);
-                }
+                ResponseDTO responseDTO = getUpperProfit(
+                        candidate, rateVO, requestDTO.getStart(), requestDTO.getEnd(), stockRecommendVO.getToCompare()
+                );
+                responseDTOs.add(responseDTO);
             }
         }
         responseDTOs = sortByGetBetter(responseDTOs);
@@ -77,19 +79,28 @@ public class MainService {
 
         // [ToDo - 로직의 중복 제거하기.]
         avgRateWrapper.put("priceRateWrapper",
-                new double[]{quarterEntity.getAvgPrice(), monthEntity.getAvgPrice(), day5Entity.getAvgPrice()});
+                new double[]{quarterEntity.getAvgPrice(), monthEntity.getAvgPrice(), day5Entity.getAvgPrice()}
+        );
         avgRateWrapper.put("volumeRateWrapper",
-                new double[]{quarterEntity.getAvgVolume(), monthEntity.getAvgVolume(), day5Entity.getAvgVolume()});
+                new double[]{quarterEntity.getAvgVolume(), monthEntity.getAvgVolume(), day5Entity.getAvgVolume()}
+        );
         avgRateWrapper.put("sdRateWrapper",
-                new double[]{quarterEntity.getAvgPriceSd(), monthEntity.getAvgPriceSd(), day5Entity.getAvgPriceSd()});
+                new double[]{quarterEntity.getAvgPriceSd(), monthEntity.getAvgPriceSd(), day5Entity.getAvgPriceSd()}
+        );
 
         return avgRateWrapper;
     }
 
     public RateVO getRateVO(HashMap<String, double[]> avgRateWrapper, StockRecommendVO stockRecommendVO){
-        double priceRate = getCosineSimilarity(avgRateWrapper.get("priceRateWrapper"), stockRecommendVO.getAvgPriceWrapper());
-        double volumeRate = getCosineSimilarity(avgRateWrapper.get("volumeRateWrapper"), stockRecommendVO.getAvgVolumeWrapper());
-        double sdRate = getCosineSimilarity(avgRateWrapper.get("sdRateWrapper"), stockRecommendVO.getAvgSdWrapper());
+        double priceRate = getCosineSimilarity(
+                avgRateWrapper.get("priceRateWrapper"), stockRecommendVO.getAvgPriceWrapper()
+        );
+        double volumeRate = getCosineSimilarity(
+                avgRateWrapper.get("volumeRateWrapper"), stockRecommendVO.getAvgVolumeWrapper()
+        );
+        double sdRate = getCosineSimilarity(
+                avgRateWrapper.get("sdRateWrapper"), stockRecommendVO.getAvgSdWrapper()
+        );
         double rate = (priceRate+volumeRate+sdRate) / 3;
 
         if (priceRate > 0.5 & volumeRate > 0.5 & sdRate > 0.5){
@@ -100,7 +111,7 @@ public class MainService {
     }
 
     public StockRecommendVO getStockRecommendVO(StockEntity stockEntity, RequestDTO requestDTO){
-        RecordEntity inputRecordEntity =recordRepository.findByPk(new Pk(stockEntity, toDate(requestDTO.getEnd())));
+        RecordEntity inputRecordEntity = recordRepository.findByPk(new Pk(stockEntity, toDate(requestDTO.getEnd())));
         double inputStockPrice = inputRecordEntity.getPrice()/100*(requestDTO.getProfit());
         HashMap<String, double[]> avgRateWrapper = getAvgRateWrapper(stockEntity.getCode());
 
@@ -113,7 +124,8 @@ public class MainService {
     }
 
     public List<StockEntity> getCandidates(StockEntity stockEntity){
-        List<StockEntity> candidates = stockRepository.findBySectorAndMarket(stockEntity.getSector(), stockEntity.getMarket());
+        List<StockEntity> candidates = stockRepository.findBySectorAndMarket(
+                stockEntity.getSector(), stockEntity.getMarket());
         candidates.remove(stockEntity);
         return candidates;
     }
@@ -166,17 +178,57 @@ public class MainService {
     }
 
     public ResponseDTO getUpperProfit(StockEntity stockEntity, RateVO rateVO, DateVO start, DateVO end, double toCompare){
-        // 알고리즘 개선 - stockEntity
-        RecordEntity b = recordRepository.findByPk(new Pk((StockEntity) stockEntity, toDate(start)));
-        RecordEntity e = recordRepository.findByPk(new Pk((StockEntity) stockEntity, toDate(end)));
-        if ((e.getPrice()-b.getPrice()) >= toCompare){
-            try{
-                return new ResponseDTO(start, end, ((StockEntity) stockEntity).getName(), ((StockEntity) stockEntity).getCode(), toCompare, (e.getPrice()-b.getPrice()), rateVO);
-            }
-            catch (Exception error){
-                error.printStackTrace();
+        double startPlusADayPrice;
+        double endMinusADayPrice;
+        LocalDate startLocalDate = LocalDate.parse(toDate(start));
+        LocalDate endLocalDate = LocalDate.parse(toDate(end));
+        double startPrice = getPrice(startLocalDate, stockEntity);
+        double endPrice = getPrice(endLocalDate, stockEntity);
+
+        while (endPrice - startPrice <= toCompare){
+            // 시작 날짜만 하루 plus
+            startPlusADayPrice = getPrice(startLocalDate.plus(Period.ofDays(1)), stockEntity);
+
+            // 종료 날짜만 하루 minus
+            endMinusADayPrice = getPrice(endLocalDate.minus(Period.ofDays(1)), stockEntity);
+
+            if (endMinusADayPrice - startPrice > endPrice - startPlusADayPrice){
+                endPrice = endMinusADayPrice;
+                endLocalDate = endLocalDate.minus(Period.ofDays(1));
+            } else if (endPrice - startPlusADayPrice > endMinusADayPrice - startPrice) {
+                startPrice = startPlusADayPrice;
+                startLocalDate = startLocalDate.plus(Period.ofDays(1));
             }
         }
-        return null;
+
+        return ResponseDTO.builder()
+                .start(DateVO.builder()
+                        .year(String.valueOf(startLocalDate.getYear()))
+                        .month(String.valueOf(startLocalDate.getMonth()))
+                        .date(String.valueOf(startLocalDate.getDayOfMonth()))
+                        .build()
+                )
+                .end(DateVO.builder()
+                        .year(String.valueOf(endLocalDate.getYear()))
+                        .month(String.valueOf(endLocalDate.getMonth()))
+                        .date(String.valueOf(endLocalDate.getDayOfMonth()))
+                        .build()
+                )
+                .stockName(stockEntity.getName())
+                .stockCode(stockEntity.getCode())
+                .toCompare(toCompare)
+                .better(endPrice - startPrice) // 변경
+                .rateVO(rateVO)
+                .build();
     }
+
+    public double getPrice(LocalDate localDate, StockEntity stockEntity){
+        try{
+            RecordEntity record = recordRepository.findByPk(new Pk(stockEntity, localDate.toString()));
+            return record.getPrice();
+        }catch (Exception e){
+            return 0; //  거래일이 아니라 가격 정보가 없으므로 0 리턴
+        }
+    }
+
 }
