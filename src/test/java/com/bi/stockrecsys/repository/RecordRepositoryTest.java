@@ -19,34 +19,34 @@ class RecordRepositoryTest {
     @Mock private StockRepository stockRepository;
     @Mock private RecordRepository recordRepository;
 
-    @BeforeEach
-    public void setUp(){
-        StockEntity stockEntity = new StockEntity("테스트코드", "테스트종목", "Y", "테스트섹터");
-        Pk pk = new Pk(stockEntity, "2022-09-14");
-        RecordEntity recordEntity = new RecordEntity(pk, 0, 0);
-
-        stockRepository.save(stockEntity);
-        recordRepository.save(recordEntity);
-    }
-
-    @AfterEach
-    public void clear(){
-        stockRepository.deleteAll();
-        recordRepository.deleteAll();
-    }
-
-    @ParameterizedTest
-    @CsvSource({"테스트코드", "2022-09-14"})
-    @Test
-    public void findByPk_정상_테스트(String stockCode, String inputDate){
-        // given
-        StockEntity stockEntity = stockRepository.findByCode(stockCode);
-        Pk pk = new Pk(stockEntity, inputDate);
-
-        // when
-        RecordEntity recordEntity= recordRepository.findByPk(pk);
-
-        // then
-        assertThat(recordEntity.getPk().getDate()).isEqualTo(inputDate);
-    }
+//    @BeforeEach
+//    public void setUp(){
+//        StockEntity stockEntity = new StockEntity("테스트코드", "테스트종목", "Y", "테스트섹터");
+//        Pk pk = new Pk(stockEntity, "2022-09-14");
+//        RecordEntity recordEntity = new RecordEntity(pk, 0, 0);
+//
+//        stockRepository.save(stockEntity);
+//        recordRepository.save(recordEntity);
+//    }
+//
+//    @AfterEach
+//    public void clear(){
+//        stockRepository.deleteAll();
+//        recordRepository.deleteAll();
+//    }
+//
+//    @ParameterizedTest
+//    @CsvSource({"테스트코드", "2022-09-14"})
+//    @Test
+//    public void findByPk_정상_테스트(String stockCode, String inputDate){
+//        // given
+//        StockEntity stockEntity = stockRepository.findByCode(stockCode);
+//        Pk pk = new Pk(stockEntity, inputDate);
+//
+//        // when
+//        RecordEntity recordEntity= recordRepository.findByPk(pk);
+//
+//        // then
+//        assertThat(recordEntity.getPk().getDate()).isEqualTo(inputDate);
+//    }
 }

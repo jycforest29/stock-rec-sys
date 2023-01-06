@@ -17,6 +17,8 @@ import java.util.List;
 public class MainController {
 
     private final MainService mainService;
+    private List<RequestDTO> requestDTOs;
+    private List<ResponseDTO>[] responseDTOs;
 
     public MainController(MainService mainService){
         this.mainService = mainService;
@@ -24,28 +26,27 @@ public class MainController {
 
     @GetMapping("/rebalance")
     public ResponseEntity<?> rebalance(@RequestBody RequestDTOWrapper requestDTOWrapper){
-        // [ToDo - refactor] 클래스 단일 책임 원칙에 맞지 않음.
-        List<RequestDTO> requestDTOList = requestDTOWrapper.getRequestDTOs();
-        List<ResponseDTO>[] responseDTOList = new ArrayList[requestDTOList.size()];
-        for(int i = 0; i < requestDTOList.size(); i++){
-            responseDTOList[i] = new ArrayList<ResponseDTO>();
+        requestDTOs = requestDTOWrapper.getRequestDTOs();
+        responseDTOs = new ArrayList[requestDTOs.size()];
+        for(int i = 0; i < requestDTOs.size(); i++){
+            responseDTOs[i] = new ArrayList<ResponseDTO>();
         }
 
         int idx = 0;
-        for(RequestDTO requestDTO : requestDTOList){
+        for(RequestDTO requestDTO : requestDTOs){
             validate(requestDTO);
             try{
-                responseDTOList[idx] = mainService.recommend(requestDTO);
+                responseDTOs[idx] = mainService.recommend(requestDTO);
                 idx += 1;
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTOList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTOs);
     }
 
-// [ToDo - refactor] 분기문이 너무 많음. 더 깔끔히 처리할 수 없을까?
+    // [ToDo - refactor] 분기문이 너무 많음. 더 깔끔히 처리할 수 없을까?
     public void validate(RequestDTO requestDTO){
         // [ToDo - feat] 거래 날짜가 DB상의 범위를 벗어나는 경우에 대해 예외처리 안함.
         if (requestDTO.getStart().toString().isEmpty()){ // [To - feat]각 년도, 월, 일이 빈칸일 때 예외 세부적 처리 안함.
@@ -63,5 +64,9 @@ public class MainController {
         if (requestDTO.getVolume() <= 0){
             throw new RuntimeException("거래량 <= 0");
         }
+    }
+
+    public void setUp(){
+
     }
 }
