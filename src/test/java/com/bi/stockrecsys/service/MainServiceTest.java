@@ -51,7 +51,7 @@ class MainServiceTest {
     @Test
     public void isArraySizeEqual_예외_테스트(){
         // given
-        double[] vectorA = new double[]{0.5};
+        double[] vectorA = new double[]{0.5, 1.1};
         double[] vectorB = new double[]{0.5};
 
         // when

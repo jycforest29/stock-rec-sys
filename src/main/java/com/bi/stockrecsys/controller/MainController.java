@@ -28,31 +28,25 @@ public class MainController {
     public ResponseEntity<?> rebalance(@RequestBody RequestDTOWrapper requestDTOWrapper){
         requestDTOs = requestDTOWrapper.getRequestDTOs();
         responseDTOs = new ArrayList[requestDTOs.size()];
-        for(int i = 0; i < requestDTOs.size(); i++){
-            responseDTOs[i] = new ArrayList<ResponseDTO>();
-        }
 
         int idx = 0;
         for(RequestDTO requestDTO : requestDTOs){
             validate(requestDTO);
-            try{
-                responseDTOs[idx] = mainService.recommend(requestDTO);
-                idx += 1;
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            responseDTOs[idx] = mainService.recommend(requestDTO);
+            idx += 1;
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTOs);
     }
 
+
     // [ToDo - refactor] 분기문이 너무 많음. 더 깔끔히 처리할 수 없을까?
     public void validate(RequestDTO requestDTO){
         // [ToDo - feat] 거래 날짜가 DB상의 범위를 벗어나는 경우에 대해 예외처리 안함.
-        if (requestDTO.getStart().toString().isEmpty()){ // [To - feat]각 년도, 월, 일이 빈칸일 때 예외 세부적 처리 안함.
+        if (requestDTO.getStart().toString().isEmpty()){
             throw new RuntimeException("거래시작 기간 빈칸");
         }
-        if (requestDTO.getEnd().toString().equals("")){ // [To - feat]각 년도, 월, 일이 빈칸일 때 예외 세부적 처리 안함.
+        if (requestDTO.getEnd().toString().equals("")){
             throw new RuntimeException("거래종료 기간 빈칸");
         }
         if (requestDTO.getStockName().isEmpty()){
@@ -66,7 +60,4 @@ public class MainController {
         }
     }
 
-    public void setUp(){
-
-    }
 }
