@@ -1,5 +1,5 @@
 # stock-rec-sys
-
+[![Java CI with Gradle](https://github.com/jycforest29/stock-rec-sys/actions/workflows/gradle.yml/badge.svg)](https://github.com/jycforest29/stock-rec-sys/actions/workflows/gradle.yml)
 - 프로젝트 이름
 
     아 이거 살걸
