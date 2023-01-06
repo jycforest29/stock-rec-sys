@@ -14,7 +14,6 @@ import com.bi.stockrecsys.repository.*;
 import com.bi.stockrecsys.repository.transaction.MonthRepository;
 import com.bi.stockrecsys.repository.transaction.QuarterRepository;
 import com.bi.stockrecsys.vo.StockRecommendVO;
-import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
