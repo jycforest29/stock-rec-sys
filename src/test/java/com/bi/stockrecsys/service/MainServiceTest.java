@@ -6,9 +6,9 @@ import com.bi.stockrecsys.repository.transaction.Day5Repository;
 import com.bi.stockrecsys.repository.transaction.MonthRepository;
 import com.bi.stockrecsys.repository.transaction.QuarterRepository;
 import com.bi.stockrecsys.vo.DateVO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,18 +23,8 @@ class MainServiceTest {
     @Mock private MonthRepository monthRepository;
     @Mock private Day5Repository day5Repository;
     @Mock private RecordRepository recordRepository;
+    @InjectMocks
     private MainService mainService;
-
-    @BeforeEach
-    public void BeforeEach(){
-        this.mainService = new MainService(
-                this.stockRepository,
-                this.quarterRepository,
-                this.monthRepository,
-                this.day5Repository,
-                this.recordRepository
-        );
-    }
 
     @Test
     public void getCosineSimilarity_예외_테스트(){
