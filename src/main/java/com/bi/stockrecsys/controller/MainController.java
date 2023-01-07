@@ -59,5 +59,4 @@ public class MainController {
             throw new RuntimeException("거래량 <= 0");
         }
     }
-
 }
