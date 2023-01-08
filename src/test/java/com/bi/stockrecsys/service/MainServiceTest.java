@@ -23,8 +23,7 @@ class MainServiceTest {
     @Mock private MonthRepository monthRepository;
     @Mock private Day5Repository day5Repository;
     @Mock private RecordRepository recordRepository;
-    @InjectMocks
-    private MainService mainService;
+    @InjectMocks private MainService mainService;
 
     @Test
     public void getCosineSimilarity_예외_테스트(){
@@ -64,6 +63,4 @@ class MainServiceTest {
         // then
         assertThat(toDateResult).isEqualTo("2022-09-14");
     }
-
-
 }
