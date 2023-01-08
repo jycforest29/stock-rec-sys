@@ -58,233 +58,343 @@
 
 - 결과
     
-    ```json
-    {
-        "requestDTOs":[
-        {
-            "start":{
-                "year":"2022", "month":"9", "date":"14"
-            },
-            "end":{
-                "year":"2022", "month":"11", "date":"11"
-            },
-            "stockName":"일동제약",
-            "stockCode":"249420",
-            "volume":36,
-            "profit":3.6
-        },
-        {
-            "start":{
-                "year":"2022", "month":"9", "date":"14"
-            },
-            "end":{
-                "year":"2022", "month":"11", "date":"11"
-            },
-            "stockName":"두산밥캣",
-            "stockCode":"241560",
-            "volume":36,
-            "profit":3.6
-        },
-        {
-            "start":{
-                "year":"2022", "month":"9", "date":"14"
-            },
-            "end":{
-                "year":"2022", "month":"11", "date":"11"
-            },
-            "stockName":"DSR",
-            "stockCode":"069460",
-            "volume":36,
-            "profit":3.6
-        }]
-    }
-    ```
-    
-    ```json
     [
-        [
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "동아에스티",
-                "stockCode": "170900",
-                "toCompare": 1051.2,
-                "better": 4600.0,
-                "rateVO": {
-                    "rate": 0.9448264838851159,
-                    "priceRate": 0.9987742506553949,
-                    "volumeRate": 0.861172365563372,
-                    "priceSdRate": 0.9745328354365808
-                }
+    [
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
             },
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "유한양행",
-                "stockCode": "000100",
-                "toCompare": 1051.2,
-                "better": 2500.0,
-                "rateVO": {
-                    "rate": 0.967711668804231,
-                    "priceRate": 0.996757448007138,
-                    "volumeRate": 0.9890141476404511,
-                    "priceSdRate": 0.9173634107651037
-                }
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
             },
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "대원제약",
-                "stockCode": "003220",
-                "toCompare": 1051.2,
-                "better": 1400.0,
-                "rateVO": {
-                    "rate": 0.9703329773585566,
-                    "priceRate": 0.9981673051197735,
-                    "volumeRate": 0.9912162721933732,
-                    "priceSdRate": 0.9216153547625229
-                }
+            "stockName": "한미약품",
+            "stockCode": "128940",
+            "toCompare": 1051.2,
+            "better": 263500.0,
+            "rateVO": {
+                "rate": 0.9219222313885579,
+                "priceRate": 0.9964566152528559,
+                "volumeRate": 0.908626002809465,
+                "priceSdRate": 0.8606840761033524
             }
-        ],
-        [
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "현대두산인프라코어",
-                "stockCode": "042670",
-                "toCompare": 1285.2,
-                "better": 1910.0,
-                "rateVO": {
-                    "rate": 0.9045451808279236,
-                    "priceRate": 0.9966501962862117,
-                    "volumeRate": 0.8074568294062188,
-                    "priceSdRate": 0.9095285167913405
-                }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "대웅제약",
+            "stockCode": "069620",
+            "toCompare": 1051.2,
+            "better": 154000.0,
+            "rateVO": {
+                "rate": 0.9857678936147812,
+                "priceRate": 0.9938612288154084,
+                "volumeRate": 0.986975523062969,
+                "priceSdRate": 0.9764669289659661
             }
-        ],
-        [
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "영풍",
-                "stockCode": "000670",
-                "toCompare": 50.4,
-                "better": 61000.0,
-                "rateVO": {
-                    "rate": 0.9677148970716353,
-                    "priceRate": 0.9994408915100508,
-                    "volumeRate": 0.9462498527339025,
-                    "priceSdRate": 0.9574539469709525
-                }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
             },
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "삼아알미늄",
-                "stockCode": "006110",
-                "toCompare": 50.4,
-                "better": 8250.0,
-                "rateVO": {
-                    "rate": 0.9728171018864047,
-                    "priceRate": 0.9984338382599585,
-                    "volumeRate": 0.9271996371226875,
-                    "priceSdRate": 0.9928178302765679
-                }
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
             },
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "풍산",
-                "stockCode": "103140",
-                "toCompare": 50.4,
-                "better": 2050.0,
-                "rateVO": {
-                    "rate": 0.9429183466451888,
-                    "priceRate": 0.999500952538884,
-                    "volumeRate": 0.834443117555538,
-                    "priceSdRate": 0.9948109698411446
-                }
-            },
-            {
-                "start": {
-                    "year": "2022",
-                    "month": "9",
-                    "date": "14"
-                },
-                "end": {
-                    "year": "2022",
-                    "month": "11",
-                    "date": "11"
-                },
-                "stockName": "이구산업",
-                "stockCode": "025820",
-                "toCompare": 50.4,
-                "better": 60.0,
-                "rateVO": {
-                    "rate": 0.9936876663349444,
-                    "priceRate": 0.9990990233941247,
-                    "volumeRate": 0.9992672747862202,
-                    "priceSdRate": 0.9826967008244883
-                }
+            "stockName": "녹십자",
+            "stockCode": "006280",
+            "toCompare": 1051.2,
+            "better": 130500.0,
+            "rateVO": {
+                "rate": 0.9378392546374442,
+                "priceRate": 0.9965170359809395,
+                "volumeRate": 0.9036578027034559,
+                "priceSdRate": 0.9133429252279368
             }
-        ]
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "종근당홀딩스",
+            "stockCode": "001630",
+            "toCompare": 1051.2,
+            "better": 53900.0,
+            "rateVO": {
+                "rate": 0.961980632359027,
+                "priceRate": 0.9976801916008735,
+                "volumeRate": 0.9504109624735526,
+                "priceSdRate": 0.9378507430026547
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "10"
+            },
+            "stockName": "삼진제약",
+            "stockCode": "005500",
+            "toCompare": 1051.2,
+            "better": 25600.0,
+            "rateVO": {
+                "rate": 0.9239176603922542,
+                "priceRate": 0.9969494772124811,
+                "volumeRate": 0.8717543791607372,
+                "priceSdRate": 0.9030491248035446
+            }
+        }
+    ],
+    [
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "화천기공",
+            "stockCode": "000850",
+            "toCompare": 1285.2,
+            "better": 32200.0,
+            "rateVO": {
+                "rate": 0.8168040573074723,
+                "priceRate": 0.999147101576151,
+                "volumeRate": 0.5106034214850547,
+                "priceSdRate": 0.9406616488612108
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "한미반도체",
+            "stockCode": "042700",
+            "toCompare": 1285.2,
+            "better": 12300.0,
+            "rateVO": {
+                "rate": 0.9521368633805919,
+                "priceRate": 0.9996122395097924,
+                "volumeRate": 0.885740536644183,
+                "priceSdRate": 0.9710578139878003
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "우진플라임",
+            "stockCode": "049800",
+            "toCompare": 1285.2,
+            "better": 3920.0,
+            "rateVO": {
+                "rate": 0.8146459866486433,
+                "priceRate": 0.9984908807004317,
+                "volumeRate": 0.560738478916383,
+                "priceSdRate": 0.8847086003291149
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "기신정기",
+            "stockCode": "092440",
+            "toCompare": 1285.2,
+            "better": 3450.0,
+            "rateVO": {
+                "rate": 0.866693051423217,
+                "priceRate": 0.998607572275601,
+                "volumeRate": 0.7246945997871277,
+                "priceSdRate": 0.8767769822069221
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "우신시스템",
+            "stockCode": "017370",
+            "toCompare": 1285.2,
+            "better": 3160.0,
+            "rateVO": {
+                "rate": 0.8525821032467672,
+                "priceRate": 0.9991908407295083,
+                "volumeRate": 0.6134061740727308,
+                "priceSdRate": 0.9451492949380629
+            }
+        }
+    ],
+    [
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "14"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "영풍",
+            "stockCode": "000670",
+            "toCompare": 50.4,
+            "better": 61000.0,
+            "rateVO": {
+                "rate": 0.9677148970716353,
+                "priceRate": 0.9994408915100508,
+                "volumeRate": 0.9462498527339025,
+                "priceSdRate": 0.9574539469709525
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "14"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "삼아알미늄",
+            "stockCode": "006110",
+            "toCompare": 50.4,
+            "better": 8250.0,
+            "rateVO": {
+                "rate": 0.9728171018864047,
+                "priceRate": 0.9984338382599585,
+                "volumeRate": 0.9271996371226875,
+                "priceSdRate": 0.9928178302765679
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "DSR",
+            "stockCode": "155660",
+            "toCompare": 50.4,
+            "better": 5040.0,
+            "rateVO": {
+                "rate": 0.988207276512842,
+                "priceRate": 0.9974247306713261,
+                "volumeRate": 0.9878342394550121,
+                "priceSdRate": 0.9793628594121878
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "16"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "고려아연",
+            "stockCode": "010130",
+            "toCompare": 50.4,
+            "better": 4000.0,
+            "rateVO": {
+                "rate": 0.9431252928156306,
+                "priceRate": 0.9996940936392631,
+                "volumeRate": 0.9110950847913377,
+                "priceSdRate": 0.918586700016291
+            }
+        },
+        {
+            "start": {
+                "year": "2022",
+                "month": "SEPTEMBER",
+                "date": "17"
+            },
+            "end": {
+                "year": "2022",
+                "month": "NOVEMBER",
+                "date": "11"
+            },
+            "stockName": "알루코",
+            "stockCode": "001780",
+            "toCompare": 50.4,
+            "better": 2525.0,
+            "rateVO": {
+                "rate": 0.9911921298814241,
+                "priceRate": 0.9985469575368005,
+                "volumeRate": 0.9926086125458323,
+                "priceSdRate": 0.9824208195616397
+            }
+        }
     ]
-    ```
+]
     - toCompare는 실제 수익
     - better는 개선된 수익
