@@ -1,13 +1,19 @@
 package com.bi.stockrecsys.controller;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@WebMvcTest
+@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 class MainControllerTest {
-    @Mock private MainController mainController;
 
+    @Test
+    public void rebalance_요청_호출_정상_테스트(){
+
+    }
 }

@@ -60,7 +60,9 @@ public class MainService {
                 ResponseDTO responseDTO = getUpperProfit(
                         candidate, rateVO, requestDTO.getStart(), requestDTO.getEnd(), stockRecommendVO.getToCompare()
                 );
-                responseDTOs.add(responseDTO);
+                if(responseDTO != null){
+                    responseDTOs.add(responseDTO);
+                }
             }
         }
         responseDTOs = sortByGetBetter(responseDTOs);
@@ -102,7 +104,7 @@ public class MainService {
         );
         double rate = (priceRate+volumeRate+sdRate) / 3;
 
-        if (priceRate > 0.5 & volumeRate > 0.5 & sdRate > 0.5){
+        if (priceRate > 0.9 & volumeRate > 0.9 & sdRate > 0.9){
             RateVO rateVO = new RateVO(rate, priceRate, volumeRate, sdRate);
             return rateVO;
         }
@@ -183,8 +185,12 @@ public class MainService {
         LocalDate endLocalDate = LocalDate.parse(toDate(end));
         double startPrice = getPrice(startLocalDate, stockEntity);
         double endPrice = getPrice(endLocalDate, stockEntity);
+        int count = 0;
 
         while (endPrice - startPrice <= toCompare){
+            if (count >= 5){
+                return null;
+            }
             // 시작 날짜만 하루 plus
             startPlusADayPrice = getPrice(startLocalDate.plus(Period.ofDays(1)), stockEntity);
 
@@ -198,6 +204,7 @@ public class MainService {
                 startPrice = startPlusADayPrice;
                 startLocalDate = startLocalDate.plus(Period.ofDays(1));
             }
+            count += 1;
         }
 
         return ResponseDTO.builder()
