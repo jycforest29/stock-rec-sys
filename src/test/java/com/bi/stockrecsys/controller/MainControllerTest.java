@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 @ExtendWith(MockitoExtension.class)
 class MainControllerTest {
 
-//    @Test
-//    public void rebalance_요청_호출_정상_테스트(){
-//
-//    }
+    @Test
+    public void rebalance_요청_호출_정상_테스트(){
+
+    }
 }
