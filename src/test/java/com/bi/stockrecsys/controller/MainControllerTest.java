@@ -79,7 +79,7 @@ class MainControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/rebalance").contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(requestDTOWrapper))).andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(415);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
         assertThat(mvcResult.getResponse().getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
 
     }
