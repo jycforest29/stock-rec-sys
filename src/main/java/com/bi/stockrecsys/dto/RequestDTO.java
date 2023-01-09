@@ -1,13 +1,11 @@
 package com.bi.stockrecsys.dto;
 
 import com.bi.stockrecsys.vo.DateVO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 public class RequestDTO {
     @NonNull

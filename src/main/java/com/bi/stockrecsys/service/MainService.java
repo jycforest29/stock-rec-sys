@@ -207,16 +207,17 @@ public class MainService {
             count += 1;
         }
 
+        String s = String.valueOf(startLocalDate.getMonth());
         return ResponseDTO.builder()
                 .start(DateVO.builder()
                         .year(String.valueOf(startLocalDate.getYear()))
-                        .month(String.valueOf(startLocalDate.getMonth()))
+                        .month(String.valueOf(startLocalDate.getMonthValue()))
                         .date(String.valueOf(startLocalDate.getDayOfMonth()))
                         .build()
                 )
                 .end(DateVO.builder()
                         .year(String.valueOf(endLocalDate.getYear()))
-                        .month(String.valueOf(endLocalDate.getMonth()))
+                        .month(String.valueOf(endLocalDate.getMonthValue()))
                         .date(String.valueOf(endLocalDate.getDayOfMonth()))
                         .build()
                 )
