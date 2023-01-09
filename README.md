@@ -1,7 +1,7 @@
 # stock-rec-sys
 [![Java CI with Gradle](https://github.com/jycforest29/stock-rec-sys/actions/workflows/gradle.yml/badge.svg)](https://github.com/jycforest29/stock-rec-sys/actions/workflows/gradle.yml)
 
-branch protection 확인
+branch protection 확인?
 - 프로젝트 소개
     
     사용자의 주식 거래 내역 기반으로 대신 매수했으면 더 좋았을 주식을 추천해주는 서비스로, 중앙대학교 비즈니스 인텔리전스 수업에서 개인과제로 진행함.
