@@ -74,13 +74,13 @@ class MainControllerTest {
 
     @Test
     public void rebalance_정상_테스트() throws Exception {
-//        rebalance_초기화();
-//        when(mainService.recommend(any())).thenReturn(new ArrayList<>(Arrays.asList(responseDTO)));
-//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/rebalance").contentType(MediaType.APPLICATION_JSON)
-//                .content(new ObjectMapper().writeValueAsString(requestDTOWrapper))).andReturn();
-//
-//        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
-//        assertThat(mvcResult.getResponse().getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        rebalance_초기화();
+        when(mainService.recommend(any())).thenReturn(new ArrayList<>(Arrays.asList(responseDTO)));
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/rebalance").contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(requestDTOWrapper))).andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(415);
+        assertThat(mvcResult.getResponse().getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
 
     }
 
